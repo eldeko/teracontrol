@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" href="https://www.teracode.com/wp-content/themes/teracode/favicon.ico" type="image/x-icon">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="d-flex margin-left">
+        <img src="logo.png" alt="Logo" class="logo">
+    </div>
+
+    <style>
+        body {
+            background-image: url('background.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .logo {
+            width: 350px;
+            /* Adjust as needed */
+            height: auto;
+            /* Keeps the aspect ratio */
+        }
+
+        .header-box-all-users {
+            background-color: #818177ce;
+
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(13, 14, 13, 0.89);
+            color: #2c3235;
+
+            margin: auto;
+        }
+
+        .header-box-all-events {
+            background-color: #818177ce;
+
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(13, 14, 13, 0.89);
+            color: #2c3235;
+
+            margin: auto;
+        }
+
+        .header-box-create-user {
+            background-color: #818177ce;
+
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(13, 14, 13, 0.89);
+            color: #333;
+            margin: auto;
+        }
+
+        .modal-dialog {
+    max-width: 90%; /* Adjust this value as needed */
+    max-height: 90vh; /* Adjust this value as needed */
+    overflow: auto;
+}
+
+        .allEvents-modal-body, .userEvents-modal-body {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    width: 100%;
+    overflow: auto;
+    padding: 20px;
+}
+    </style>
+
+    <style>
+        .list-group-item.active {
+            background-color: #333;
+            border-color: #333;
+            color: #fff;
+        }
+
+        .list-group-item {
+            color: #333;
+            background-color: #f8f9fa;
+        }
+    </style>
+    
+    <!-- Create User Modal -->
+    <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Content for creating a user will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <div class="header-box-create-user">
+        <div class="d-flex justify-content-center">
+
+            <button type="submit" class="btn btn-secondary mt-3" style="margin: 15px;" data-toggle="modal"
+                data-target="#createUserModal">Create User</button>
+        </div>
+    </div>
+    <hr>
+    <div class="header-box-all-events">
+        <div class="d-flex justify-content-center">
+
+            <!-- Add the All Events button -->
+            <button id="toggleEventsList" type="button" class="btn btn-secondary" data-toggle="modal"
+                data-target="#eventsModal">
+                Show All Events
+            </button>
+        </div>
+
+    </div>
+    <!-- The Modal -->
+    <div class="modal" id="eventsModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">All Events</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="table-responsive">
+                <!-- Modal body -->
+                <div class="AllEvents-modal-body">
+                    <!-- Events will be inserted here -->
+                </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="header-box-all-users">
+        <div class="d-flex justify-content-center">
+
+            <button id="toggleUserList" type="submit" class="btn btn-secondary mt-3" style="margin: 15px;">Manage
+                Users</button>
+        </div>
+    </div>
+    <div class="list-group"></div>
+
+    <!-- User List Modal -->
+    <dialog class="modal fade" id="userListModal" tabindex="-1" aria-labelledby="userListModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-custom-width" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userListModalLabel">User Events</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="userEvents-modal-body">
+                    <!-- Content for user events will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- User Events Modal -->
+    <dialog class="modal fade" id="userEventsModal" tabindex="-1" aria-labelledby="userEventsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-custom-width" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userEventsModalLabel">User Events</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="userEvents-modal-body">
+                    <!-- Content for user events will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        </div>
+
+        <!-- Include jQuery and Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                $('#createUserModal').on('show.bs.modal', function (e) {
+                    const modal = $(this);
+                    modal.find('.modal-content').load('/createUser.html', function () {
+                        modal.find('#userForm').on('submit', function (event) {
+                            event.preventDefault();
+                            const username = document.getElementById('username').value;
+                            const email = document.getElementById('email').value;
+                            const password = document.getElementById('password').value;
+                            fetch('/api/createUser', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    username: username,
+                                    email: email,
+                                    password: password
+                                }),
+                            });
+                        });
+                    });
+                });
+            });
+
+        </script>
+
+        <script>// Function to fetch and display users
+            // Function to fetch and display users
+            function fetchAndDisplayUsers() {
+                // Fetch all users from the API
+                fetch('/api/users')
+                    .then(response => {
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.indexOf('application/json') !== -1) {
+                            return response.json();
+                        } else if (contentType && contentType.indexOf('text/html') !== -1) {
+                            return response.text();
+                        } else {
+                            throw new TypeError("Oops, we haven't got JSON or HTML!");
+                        }
+                    })
+                    .then(data => {
+                        // Get the list group element
+                        const listGroup = document.querySelector('.list-group');
+
+                        // Clear the list group
+                        listGroup.innerHTML = '';
+
+                        // Check if data is an array before using forEach
+                        if (Array.isArray(data)) {
+                            // Create a list group item for each user
+                            data.forEach(user => {
+                                const item = document.createElement('a');
+                                item.href = '#';
+                                item.className = 'list-group-item list-group-item-action';
+                                item.textContent = user.username;
+
+                                // Add event listener to the list group item
+                                item.addEventListener('click', function () {
+                                    // Fetch the user's events from the API
+                                    fetch(`/users/${user.id}/events`)
+                                        .then(response => {
+                                            const contentType = response.headers.get('content-type');
+                                            if (contentType && contentType.indexOf('application/json') !== -1) {
+                                                return response.json();
+                                            } else if (contentType && contentType.indexOf('text/html') !== -1) {
+                                                return response.text();
+                                            } else {
+                                                throw new TypeError("Oops, we haven't got JSON or HTML!");
+                                            }
+                                        })
+                                        .then(data => {                                        
+                                                const modalBody = document.querySelector('#userListModal .userEvents-modal-body');
+                                                modalBody.innerHTML = data;
+                                                var userListModalElement = document.getElementById('userListModal');
+                                                var userListModal = new bootstrap.Modal(userListModalElement);
+                                                userListModal.show();                                            
+                                        })
+                                        .catch(error => console.error(error));
+                                });
+
+                                // Add the list group item to the list group
+                                listGroup.appendChild(item);
+                            });
+                        } else {
+                            // If data is not an array, display an error message
+                            listGroup.textContent = 'Oops, something went wrong!';
+                        }
+                    })
+                    .catch(error => console.error(error));
+            }            
+
+            function fetchAndDisplayEvents() {
+                fetch('/events')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        const container = document.querySelector('#eventsModal .AllEvents-modal-body');
+                        container.innerHTML = data;
+                    })
+                    .catch(error => console.error(error));
+            }
+
+
+
+//Region Listeners
+
+            document.getElementById('toggleEventsList').addEventListener('click', function () {
+                fetchAndDisplayEvents();
+            });
+
+            let isUserListDisplayed = false;
+
+              document.getElementById('toggleUserList').addEventListener('click', function () {
+                if (isUserListDisplayed) {
+                    // If the user list is currently displayed, hide it
+                    document.querySelector('.list-group').innerHTML = '';
+                } else {
+                    // If the user list is not currently displayed, fetch and display it
+                    fetchAndDisplayUsers();
+                }
+                // Toggle the isUserListDisplayed flag
+                isUserListDisplayed = !isUserListDisplayed;
+            });
+
+            $(document).ready(function() {
+    $('.modal-dialog').on('mousedown', function (e) {
+        e.stopPropagation();
+    });
+});
+        </script>

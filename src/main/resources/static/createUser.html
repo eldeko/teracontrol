@@ -1,0 +1,82 @@
+<div class="container mt-5 p-4" style="background-color: #ffffff5b; border-top-width: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.1);"> <!-- Change background color -->
+    <h1 class="mb-4 text-dark">Create User</h1> <!-- Change text color to dark -->
+    <form id="userForm" class="mt-4">
+        <div class="form-group mb-3">
+            <label for="username" class="text-dark">Username:</label>
+            <input type="text" id="username" name="username" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="email" class="text-dark">Email:</label>
+            <input type="email" id="email" name="email" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="fullName" class="text-dark">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="computerModel" class="text-dark">Computer Model:</label>
+            <input type="text" id="computerModel" name="computerModel" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="region" class="text-dark">Region:</label>
+            <input type="text" id="region" name="region" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="seniority" class="text-dark">Seniority:</label>
+            <input type="text" id="seniority" name="seniority" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="birthDate" class="text-dark">Birth Date:</label>
+            <input type="date" id="birthDate" name="birthDate" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="firstDay" class="text-dark">First Day:</label>
+            <input type="date" id="firstDay" name="firstDay" class="form-control">
+        </div>
+        <div class="form-group mb-3">
+            <label for="title" class="text-dark">Title:</label>
+            <input type="text" id="title" name="title" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-dark mt-3">Submit</button> <!-- Change button color to dark -->
+    </form>
+</div>
+
+    <script>
+document.getElementById('userForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const fullName = document.getElementById('fullName').value;
+    const computerModel = document.getElementById('computerModel').value;
+    const region = document.getElementById('region').value;
+    const seniority = document.getElementById('seniority').value;
+    const birthDate = document.getElementById('birthDate').value;
+    const firstDay = document.getElementById('firstDay').value;
+    const title = document.getElementById('title').value;
+    fetch('/api/createUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            email: email,
+            fullName: fullName,
+            computerModel: computerModel,
+            region: region,
+            seniority: seniority,
+            birthDate: birthDate,
+            firstDay: firstDay,
+            title: title
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+});
+    </script>
+</body>
+</html>
