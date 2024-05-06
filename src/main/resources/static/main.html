@@ -63,20 +63,23 @@
         }
 
         .modal-dialog {
-    max-width: 90%; /* Adjust this value as needed */
-    max-height: 90vh; /* Adjust this value as needed */
-    overflow: auto;
-}
+            max-width: 90%;
+            /* Adjust this value as needed */
+            max-height: 90vh;
+            /* Adjust this value as needed */
+            overflow: auto;
+        }
 
-        .allEvents-modal-body, .userEvents-modal-body {
-    display: block;
-    justify-content: center;
-    align-items: center;
-    max-width: 100%;
-    width: 100%;
-    overflow: auto;
-    padding: 20px;
-}
+        .allEvents-modal-body,
+        .userEvents-modal-body {
+            display: block;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            width: 100%;
+            overflow: auto;
+            padding: 20px;
+        }
     </style>
 
     <style>
@@ -91,7 +94,7 @@
             background-color: #f8f9fa;
         }
     </style>
-    
+
     <!-- Create User Modal -->
     <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModalLabel"
         aria-hidden="true">
@@ -133,10 +136,10 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="table-responsive">
-                <!-- Modal body -->
-                <div class="AllEvents-modal-body">
-                    <!-- Events will be inserted here -->
-                </div>
+                    <!-- Modal body -->
+                    <div class="AllEvents-modal-body">
+                        <!-- Events will be inserted here -->
+                    </div>
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
@@ -232,8 +235,9 @@
 
         </script>
 
-        <script>// Function to fetch and display users
-            // Function to fetch and display users
+        <script>        
+                                                   // Function to fetch and display users
+            
             function fetchAndDisplayUsers() {
                 // Fetch all users from the API
                 fetch('/api/users')
@@ -261,7 +265,7 @@
                                 const item = document.createElement('a');
                                 item.href = '#';
                                 item.className = 'list-group-item list-group-item-action';
-                                item.textContent = user.username;
+                                item.textContent = user.textContent;
 
                                 // Add event listener to the list group item
                                 item.addEventListener('click', function () {
@@ -277,12 +281,12 @@
                                                 throw new TypeError("Oops, we haven't got JSON or HTML!");
                                             }
                                         })
-                                        .then(data => {                                        
-                                                const modalBody = document.querySelector('#userListModal .userEvents-modal-body');
-                                                modalBody.innerHTML = data;
-                                                var userListModalElement = document.getElementById('userListModal');
-                                                var userListModal = new bootstrap.Modal(userListModalElement);
-                                                userListModal.show();                                            
+                                        .then(data => {
+                                            const modalBody = document.querySelector('#userListModal .userEvents-modal-body');
+                                            modalBody.innerHTML = data;
+                                            var userListModalElement = document.getElementById('userListModal');
+                                            var userListModal = new bootstrap.Modal(userListModalElement);
+                                            userListModal.show();
                                         })
                                         .catch(error => console.error(error));
                                 });
@@ -296,7 +300,7 @@
                         }
                     })
                     .catch(error => console.error(error));
-            }            
+            }
 
             function fetchAndDisplayEvents() {
                 fetch('/events')
@@ -313,9 +317,7 @@
                     .catch(error => console.error(error));
             }
 
-
-
-//Region Listeners
+            //Region Listeners
 
             document.getElementById('toggleEventsList').addEventListener('click', function () {
                 fetchAndDisplayEvents();
@@ -323,7 +325,7 @@
 
             let isUserListDisplayed = false;
 
-              document.getElementById('toggleUserList').addEventListener('click', function () {
+            document.getElementById('toggleUserList').addEventListener('click', function () {
                 if (isUserListDisplayed) {
                     // If the user list is currently displayed, hide it
                     document.querySelector('.list-group').innerHTML = '';
@@ -335,9 +337,9 @@
                 isUserListDisplayed = !isUserListDisplayed;
             });
 
-            $(document).ready(function() {
-    $('.modal-dialog').on('mousedown', function (e) {
-        e.stopPropagation();
-    });
-});
+            $(document).ready(function () {
+                $('.modal-dialog').on('mousedown', function (e) {
+                    e.stopPropagation();
+                });
+            });
         </script>

@@ -3,156 +3,76 @@ package com.teracontrol.models;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
-import java.util.List;
-
 import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
 public class User {
 
   @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+
+  private String name;
+
+  private String surname;
+
   private String username;
+
   private String email;
 
-
-  @Column(name = "full_name")
-  private String fullName;
-  
-  public String getFullName() {
-    return fullName;
-  }
-
-  public void setFullName(String fullName) {
-    this.fullName = fullName;
-  }
-
-
-  @Column(name = "computer_model")
-  private String computerModel;
-
-  public String getComputerModel() {
-    return computerModel;
-  }
-
-  public void setComputerModel(String computerModel) {
-    this.computerModel = computerModel;
-  }
-
-
   private String region;
+
+  private String title;
+
   private String seniority;
-
-  public String getRegion() {
-    return region;
-  }
-
-  public void setRegion(String region) {
-    this.region = region;
-  }
-
-  public String getSeniority() {
-    return seniority;
-  }
-
-  public void setSeniority(String seniority) {
-    this.seniority = seniority;
-  }
-
-
   @Column(name = "birth_date")
   private Date birthDate;
-
-  public void setBirthDate(Date birthDate) {
-    this.birthDate = birthDate;
-  }
-
 
   @Column(name = "first_day")
   private Date firstDay;
 
-  public Date getFirstDay() {
-    return firstDay;
-  }
+  @Column(name = "computer_model")
+  private String computerModel;
 
-  public void setFirstDay(Date firstDay) {
-    this.firstDay = firstDay;
-  }
-
-
-  private String title;
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
+  @JsonManagedReference
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
+  private KeyLock keyLock;
 
   @CreationTimestamp
- @Column(name = "created_at", nullable = false, updatable = false)
+  @Column(name = "created_at", nullable = false, updatable = false)
   private Date createdAt;
 
   @CreationTimestamp
- @Column(name = "updated_at", nullable = false)
+  @Column(name = "updated_at", nullable = false)
   private Date updatedAt;
 
-  public long getId() {
-    return id;
+  public void setName(String name) {
+    this.name = name;    
   }
 
-  public String getUsername() {
-    return username;
+  public void setSurname(String surname) {
+    this.surname = surname;
+    updateUsernameAndEmail();
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  private void updateUsernameAndEmail() {
+    if (name != null && surname != null) {
+      this.username = (name + "." + surname).toLowerCase();
+      this.email = this.username + "@teracontrol.com";
+    }
   }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-  
-  public Date getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(Date createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  public Date getUpdatedAt() {
-    return updatedAt;
-  }
-
-  public void setUpdatedAt(Date updatedAt) {
-    this.updatedAt = updatedAt;
-  }
-
-
-   @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<KeyLock> keyLocks;
-
-  public User() {
-    
-  }
-
- 
-
 }

@@ -3,23 +3,37 @@ package com.teracontrol.models;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "events")
 public class Event {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "datetime") 
+    @Embedded
+    private AuthEntity authEntity;      
+
+    @Column(name = "datetime")
     private OffsetDateTime dateTime;
 
     @Enumerated(EnumType.STRING)
-    private EventType eventType;
-
-    private String keyCode;
+    private EventType eventType;    
 
     @ManyToOne
     @JoinColumn(name = "id_user")
@@ -29,56 +43,26 @@ public class Event {
     @JoinColumn(name = "id_door")
     private Door door;
 
-    //generate all getters and setters
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "keylock_code")
+    private String keylockCode;
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setKeylockCode(String keylockCode) {
+        this.keylockCode = keylockCode;
     }
 
     public String getDateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-       String output = dateTime.format(formatter);
-        return output;
-        
-       
-    }
-
-    public void setDateTime(OffsetDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public EventType getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
-    }
-
-    public String getKeyCode() {
-        return keyCode;
-    }
-
-    public void setKeyCode(String keyCode) {
-        this.keyCode = keyCode;
+        return dateTime.format(formatter);
     }
 
     public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Door getDoor() {
-        return door;
-    }
-
-    public void setDoor(Door door) {
-        this.door = door;
+        if (user != null) {
+            return user;
+        } else {
+            User unknownUser = new User();
+            unknownUser.setUsername("***Unknown Keylock Code***");
+            unknownUser.setKeyLock(new KeyLock());
+            return unknownUser;
+        }
     }
 }

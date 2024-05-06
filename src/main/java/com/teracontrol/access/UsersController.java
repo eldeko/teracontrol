@@ -1,7 +1,7 @@
 package com.teracontrol.access;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +24,7 @@ import java.util.Map;
 @RestController
 public class UsersController {
 
+    @Autowired
     private final UserService userService;
 
     public UsersController(UserService userService) {
@@ -50,16 +51,16 @@ public class UsersController {
 
         userWithEvents.forEach((user, events) -> {
             html.append("<h3>Name</h3>");
-            html.append("<p>").append(user.getUsername()).append("</p>"); // replace with actual user fields
+            html.append("<p>").append(user.getSurname()+", "+user.getName()).append("</p>"); // replace with actual user fields
             html.append("<h2>Events</h2>");
             html.append(
-                    "<table><tr><th>KeyCode</th><th>Datetime</th><th>EventType</th><th>Door number</th><th>Door place</th></tr>");
+                    "<table><tr><th>KeyLockCode</th><th>Datetime</th><th>EventType</th><th>Door number</th><th>Door place</th></tr>");
 
             final String TD_SEPARATOR = "</td><td>";
 
             events.forEach(event -> {
                 html.append("<tr><td>")
-                        .append(event.getKeyCode())
+                        .append(event.getUser().getKeyLock().getKeylockCode())
                         .append(TD_SEPARATOR)
                         .append(event.getDateTime())
                         .append(TD_SEPARATOR)
@@ -82,9 +83,8 @@ public class UsersController {
     public User createUser(@RequestBody UserDto user) {
 
         User newUser = new User();
-
-        newUser.setUsername(user.getUsername());
-        newUser.setEmail(user.getEmail());
+        newUser.setName(user.getName());
+        newUser.setSurname(user.getSurname());
         newUser.setBirthDate(user.getBirthDate());
         newUser.setFirstDay(user.getFirstDay());
         newUser.setTitle(user.getTitle());   
