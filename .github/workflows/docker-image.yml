@@ -46,7 +46,7 @@ jobs:
       with:
         task-definition: task-definition.json
         container-name: teracontainer
-        image: ${{ steps.login-ecr.outputs.registry }}/teracontrol:latest
+        image: ${{ steps.login-ecr.outputs.registry }}/teracontainer:latest
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
