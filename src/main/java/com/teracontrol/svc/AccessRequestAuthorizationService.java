@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.teracontrol.access.WebSocketController;
 import com.teracontrol.dto.AccessRequest;
 import com.teracontrol.models.AuthEntity;
 import com.teracontrol.models.DoorControlDevice;
@@ -29,6 +30,9 @@ public class AccessRequestAuthorizationService {
     @Autowired
     private DoorDeviceService doorDeviceService;
 
+    @Autowired
+    private WebSocketController webSocketController;
+
     public AuthEntity processAccessRequest(AccessRequest accessRequest) {
 
         AuthEntity result = keylockService.verifyAccessRequest(accessRequest.getkeylockCode());
@@ -45,7 +49,7 @@ public class AccessRequestAuthorizationService {
         
         event.setDateTime(OffsetDateTime.now());
         eventService.createEvent(event);
-
+        webSocketController.sendEvent(event);
         if (!result.isAuthorized() && result.getReason().equals("Key does not exist in DB")) {
             return new AuthEntity(false, "Unknown key access attempt");
         }

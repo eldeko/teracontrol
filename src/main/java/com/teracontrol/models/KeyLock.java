@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,7 +36,8 @@ public class KeyLock {
     @Column(name = "model")
     public String model;
 
-    @OneToMany(mappedBy = "keyLock")
+    
+    @OneToMany(mappedBy = "keyLock", fetch = FetchType.EAGER)
     private List<AccessTime> accessTimes;
 
     @OneToOne
@@ -46,6 +48,7 @@ public class KeyLock {
     @Column(name = "keylockCode")
     private String keylockCode;
 
+    @Transactional
     public String getKeylockCode() {
         return this.keylockCode;
     }

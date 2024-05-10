@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
      
 
+    //Put healthcheck here
+    //or forward
     @GetMapping("/")
     public String hello() {
         return "Hello World";

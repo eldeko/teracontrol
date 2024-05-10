@@ -1,7 +1,11 @@
 package com.teracontrol.svc;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.teracontrol.exception.EventNotFoundException;
 import com.teracontrol.models.Event;
@@ -14,17 +18,20 @@ import java.util.List;
 public class EventService {
 
     private final EventRepository eventRepository;
+    
 
     @Autowired
     public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
-    public List<Event> getAllEvents() {
 
-        var events = eventRepository.findAll();
-        return events;
-    }
+    public Page<Event> getAllEvents(Pageable pageable) {
+    // Sort by date in descending order
+    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("dateTime").descending());
+
+    return eventRepository.findAll(pageable);
+}
 
     public Event getEventById(Long id) {
         return eventRepository.findById(id)
