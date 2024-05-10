@@ -2,7 +2,7 @@
 FROM openjdk:17-jdk-slim
 
 # Add Maintainer Info
-LABEL maintainer="umomma@example.com"
+LABEL maintainer="deko@example.com"
 
 # Add a volume pointing to /tmp
 VOLUME /tmp
