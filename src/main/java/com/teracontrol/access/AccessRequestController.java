@@ -21,6 +21,8 @@ private AccessRequestAuthorizationService accessRequestAuthorizationService;
         
        AuthEntity result = accessRequestAuthorizationService.processAccessRequest(accessRequest);
 
+      //console log
+
 
         if (result.isAuthorized() == true) {
             return ResponseEntity.ok("Access granted");

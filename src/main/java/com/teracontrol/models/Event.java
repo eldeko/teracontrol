@@ -16,7 +16,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @Setter
 @Getter
 @Entity
@@ -36,18 +38,18 @@ public class Event {
     private EventType eventType;    
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id_door")
+    @JoinColumn(name = "door_id")
     private Door door;
 
-    @Column(name = "keylock_code")
-    private String keylockCode;
+    @Column(name = "code")
+    private String code;
 
-    public void setKeylockCode(String keylockCode) {
-        this.keylockCode = keylockCode;
+    public void setcode(String code) {
+        this.code = code;
     }
 
     public String getDateTime() {
@@ -61,7 +63,7 @@ public class Event {
         } else {
             User unknownUser = new User();
             unknownUser.setUsername("***Unknown Keylock Code***");
-            unknownUser.setKeyLock(new KeyLock());
+            unknownUser.setKeylock(new Keylock());
             return unknownUser;
         }
     }

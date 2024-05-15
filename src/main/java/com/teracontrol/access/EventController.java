@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import com.teracontrol.models.Event;
 import com.teracontrol.svc.EventService;
 
-import java.util.List;
-
 @ComponentScan(basePackages = "com.teracontrol.svc")
 
 @RestController

@@ -50,7 +50,7 @@ public class User {
 
   @JsonManagedReference
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = false)
-  private KeyLock keyLock;
+  private Keylock keylock;
 
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)
@@ -75,4 +75,6 @@ public class User {
       this.email = this.username + "@teracontrol.com";
     }
   }
+
+  
 }

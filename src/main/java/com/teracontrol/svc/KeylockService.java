@@ -1,8 +1,7 @@
 package com.teracontrol.svc;
 
-import com.teracontrol.models.AccessTime;
 import com.teracontrol.models.AuthEntity;
-import com.teracontrol.models.KeyLock;
+import com.teracontrol.models.Keylock;
 import com.teracontrol.repositories.KeylockRepository;
 
 import java.time.DayOfWeek;
@@ -16,16 +15,19 @@ import org.springframework.stereotype.Service;
 public class KeylockService {
 
     @Autowired
-    private KeylockRepository KeylockRepository;
+    private UserService userService;
+
+    @Autowired
+    private KeylockRepository keylockRepository;
 
 
     AuthEntity verifyAccessRequest(String keylockCode) {
         
-        var keylocks = KeylockRepository.findAll();
+        var keylocks = keylockRepository.findAll();
 
-        Optional<KeyLock> keylock = keylocks.stream()
-            .filter(k -> k.getKeylockCode().contains(keylockCode))
-            .findFirst();
+        Optional<Keylock> keylock = keylocks.stream()
+            .filter(k -> k.getcode().contains(keylockCode))
+            .findFirst().map(Optional::of).orElse(Optional.empty());
 
         if (keylock.isEmpty()) {
             return new AuthEntity(false, "Key does not exist in DB");
@@ -43,36 +45,36 @@ public class KeylockService {
         return new AuthEntity(true, "Verified existance and time control");
     }
 
-    private AuthEntity VerifyTimeControl(KeyLock result) {
-        // Get the current date
-        DayOfWeek currentDate = OffsetDateTime.now().getDayOfWeek();
+    // private AuthEntity VerifyTimeControl(Keylock result) {
+    //     // Get the current date
+    //     DayOfWeek currentDate = OffsetDateTime.now().getDayOfWeek();
         
-        // Get the accessTime for the current day from the keylock
-        Optional<AccessTime> accessTimeOptional = result.getAccessTimes().stream()
-            .filter(accessTime -> accessTime.getDayOfWeek() == currentDate)
-            .findFirst();
+    //     // Get the accessTime for the current day from the keylock
+    //     Optional<AccessTime> accessTimeOptional = result.getAccessTimes().stream()
+    //         .filter(accessTime -> accessTime.getDayOfWeek() == currentDate)
+    //         .findFirst();
         
-        if (accessTimeOptional.isPresent()) {
-            AccessTime accessTime = accessTimeOptional.get();
+    //     if (accessTimeOptional.isPresent()) {
+    //         AccessTime accessTime = accessTimeOptional.get();
 
-            // Get the current time
-            OffsetDateTime currentTime = OffsetDateTime.now();
+    //         // Get the current time
+    //         OffsetDateTime currentTime = OffsetDateTime.now();
 
-            // Check if the current time is within the access time range
-            if (currentTime.isAfter(accessTime.getStartTime()) && currentTime.isBefore(accessTime.getEndTime())) {
-                // Access time is in range
-                // Perform further operations with the accessTime object
-                    return new AuthEntity(true, "Access granted");
+    //         // Check if the current time is within the access time range
+    //         if (currentTime.isAfter(accessTime.getStartTime()) && currentTime.isBefore(accessTime.getEndTime())) {
+    //             // Access time is in range
+    //             // Perform further operations with the accessTime object
+    //                 return new AuthEntity(true, "Access granted");
 
-            } else {
-                // Access time is not in range
-                // Handle the case when the current time is outside the access time range
-                return new AuthEntity(false, "Access denied by time control. Out of time range");
-            }
+    //         } else {
+    //             // Access time is not in range
+    //             // Handle the case when the current time is outside the access time range
+    //             return new AuthEntity(false, "Access denied by time control. Out of time range");
+    //         }
                        
-        } 
-        return new AuthEntity(false, "Access denied for unknown error in time control verification"); 
-    }
+    //     } 
+    //     return new AuthEntity(false, "Access denied for unknown error in time control verification"); 
+    // }
     
     }   
 

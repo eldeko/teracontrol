@@ -10,8 +10,10 @@ import java.util.Map;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.teracontrol.models.Event;
+import com.teracontrol.models.Keylock;
 import com.teracontrol.models.User;
 import com.teracontrol.repositories.EventRepository;
+import com.teracontrol.repositories.KeylockRepository;
 import com.teracontrol.repositories.UserRepository;
 
 @ComponentScan(basePackages = "com.teracontrol.repositories")
@@ -21,11 +23,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
+    private final KeylockRepository keylockRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, EventRepository eventRepository) {
+    public UserService(UserRepository userRepository, EventRepository eventRepository, KeylockRepository keylockRepository) {
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
+        this.keylockRepository = keylockRepository;
     }
 
     public List<User> getAllUsers() {
@@ -43,4 +47,9 @@ public class UserService {
     public User createUser(User user) {
         return userRepository.save(user);
     }
+
+    public User findUserByCode(String code) {
+        return userRepository.findByKeylock_code(code);     
+    }
+
 }

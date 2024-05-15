@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 
 import com.teracontrol.models.EventType;
 
+import lombok.ToString;
+
+@ToString
 public class AccessRequest {
     
     public AccessRequest() {
         super();
     }
-    private String keylockCode;
+    private String code;
     public LocalDateTime requestDateTime = LocalDateTime.now(); 
     private EventType eventType;
     private String serialNumber;
@@ -31,12 +34,12 @@ public class AccessRequest {
     }
 
     // Getters and setters
-    public String getkeylockCode() {
-        return keylockCode;
+    public String getcode() {
+        return code;
     }
 
-    public void setkeylockCode(String keylockCode) {
-        this.keylockCode = keylockCode;
+    public void setcode(String code) {
+        this.code = code;
     }
 
     public LocalDateTime getRequestDateTime() {

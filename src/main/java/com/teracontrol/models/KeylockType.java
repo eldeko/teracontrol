@@ -1,6 +1,6 @@
 package com.teracontrol.models;
 
-public enum KeyType {
+public enum KeylockType {
 
     KEY_TYPE_CARD,
     KEY_TYPE_KEYCHAIN,

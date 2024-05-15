@@ -11,7 +11,6 @@ import com.teracontrol.models.AuthEntity;
 import com.teracontrol.models.DoorControlDevice;
 import com.teracontrol.models.Event;
 import com.teracontrol.models.User;
-import com.teracontrol.repositories.UserRepository;
 
 
 
@@ -25,7 +24,7 @@ public class AccessRequestAuthorizationService {
     private EventService eventService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private DoorDeviceService doorDeviceService;
@@ -34,25 +33,31 @@ public class AccessRequestAuthorizationService {
     private WebSocketController webSocketController;
 
     public AuthEntity processAccessRequest(AccessRequest accessRequest) {
-
-        AuthEntity result = keylockService.verifyAccessRequest(accessRequest.getkeylockCode());
-
+       
+        AuthEntity result = keylockService.verifyAccessRequest(accessRequest.getcode());
+       
         Event event = new Event();
-        User user = userRepository.findByKeylockCode(accessRequest.getkeylockCode());
+        
+        if (result.isAuthorized()) {         
+       
+        User user = userService.findUserByCode(accessRequest.getcode());
+        
+        event.setUser(user);
+        }    
+       
         DoorControlDevice doorDevice = doorDeviceService.getDoorByDeviceSerialNumber(accessRequest.getSerialNumber());
         event.setEventType(accessRequest.getEventType());
         event.setAuthEntity(result);
-        event.setKeylockCode(accessRequest.getkeylockCode());
+        event.setcode(accessRequest.getcode());
         event.setDoor(doorDevice.getInstalledDoor());   
-
-        event.setUser(user);
         
         event.setDateTime(OffsetDateTime.now());
         eventService.createEvent(event);
-        webSocketController.sendEvent(event);
-        if (!result.isAuthorized() && result.getReason().equals("Key does not exist in DB")) {
-            return new AuthEntity(false, "Unknown key access attempt");
-        }
+        
+        webSocketController.sendEvent(event);    
+      
+        System.out.println("Access request:\n" + event.toString() + "\n");
+
 
         return result;
     }
